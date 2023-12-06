@@ -23,7 +23,7 @@ import static dataaccess.Auth.LIBRARIAN;
 
 public class LibrarySystem extends JFrame implements LibWindow {
 	ControllerInterface ci = new SystemController();
-	public final static LibrarySystem INSTANCE =new LibrarySystem();
+	public final static LibrarySystem INSTANCE = new LibrarySystem();
 	JPanel mainPanel;
 	JMenuBar menuBar;
     JMenu options;
@@ -80,17 +80,21 @@ public class LibrarySystem extends JFrame implements LibWindow {
     }
     
     private void addMenuItems() {
-       options = new JMenu("Options");  
+       if(options != null) menuBar.remove(options);
+
+	   options = new JMenu("Options");
  	   menuBar.add(options);
- 	   login = new JMenuItem("Login");
+ 	   login = new JMenuItem(SystemController.currentAuth !=null ? "Logout" : "Login");
  	   login.addActionListener(new LoginListener());
  	   allBookIds = new JMenuItem("All Book Ids");
  	   allBookIds.addActionListener(new AllBookIdsListener());
  	   allMemberIds = new JMenuItem("All Member Ids");
  	   allMemberIds.addActionListener(new AllMemberIdsListener());
  	   options.add(login);
- 	   options.add(allBookIds);
- 	   options.add(allMemberIds);
+ 	   if(SystemController.currentAuth != null) {
+		   options.add(allBookIds);
+		   options.add(allMemberIds);
+	   }
     }
     
     class LoginListener implements ActionListener {
@@ -99,15 +103,16 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent e) {
 
 			//Checking Rules
-			if(SystemController.currentAuth != null && SystemController.currentAuth.equals(LIBRARIAN)) {
+			if(SystemController.currentAuth == null) {
+				LibrarySystem.hideAllWindows();
+				LoginWindow.INSTANCE.init();
+				Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
+				LoginWindow.INSTANCE.setVisible(true);
 
+			} else {
+				SystemController.currentAuth = null;
 			}
 
-			LibrarySystem.hideAllWindows();
-			LoginWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
-			LoginWindow.INSTANCE.setVisible(true);
-			
 		}
     	
     }
@@ -115,6 +120,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+
+
 			LibrarySystem.hideAllWindows();
 			AllBookIdsWindow.INSTANCE.init();
 			
