@@ -8,6 +8,13 @@ import dataaccess.DataAccessFacade;
 public class Main {
 
 	public static void main(String[] args) {
+		DataAccess da = new DataAccessFacade();
+
+		HashMap map = da.readUserMap();
+		map.forEach((key, value) -> System.out.println("Key: " + key + ", Value: " + value));
+
+
+
 		System.out.println(allWhoseZipContains3());
 		System.out.println(allHavingOverdueBook());
 		System.out.println(allHavingMultipleAuthors());

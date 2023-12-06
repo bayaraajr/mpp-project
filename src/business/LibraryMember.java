@@ -2,13 +2,17 @@ package business;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 
+import dataaccess.CheckoutRecord;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 
 final public class LibraryMember extends Person implements Serializable {
 	private String memberId;
+
+	private List<CheckoutRecord> checkoutRecords;
 	
 	public LibraryMember(String memberId, String fname, String lname, String tel,Address add) {
 		super(fname,lname, tel, add);

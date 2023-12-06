@@ -187,10 +187,6 @@ public class LoginWindow extends JFrame implements LibWindow {
     	private void addLoginButtonListener(JButton butn) {
     		butn.addActionListener(evt -> {
     			JOptionPane.showMessageDialog(this,"Successful Login");
-    				
     		});
     	}
-	
-        
-    
 }
