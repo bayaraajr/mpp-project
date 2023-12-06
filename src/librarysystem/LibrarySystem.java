@@ -20,8 +20,11 @@ import javax.swing.JPanel;
 import business.ControllerInterface;
 import business.SystemController;
 
+import static dataaccess.Auth.LIBRARIAN;
+
 
 public class LibrarySystem extends JFrame implements LibWindow {
+
     ControllerInterface ci = new SystemController();
     public final static LibrarySystem INSTANCE = new LibrarySystem();
     JPanel mainPanel;
@@ -83,33 +86,43 @@ public class LibrarySystem extends JFrame implements LibWindow {
         setJMenuBar(menuBar);
     }
 
-    private void addMenuItems() {
+    void addMenuItems() {
+
+        if (options != null) menuBar.remove(options);
+
         options = new JMenu("Options");
         menuBar.add(options);
-        login = new JMenuItem("Login");
+        login = new JMenuItem(SystemController.currentAuth != null ? "Logout" : "Login");
         login.addActionListener(new LoginListener());
+        checkoutBook = new JMenuItem("Checkout");
+        checkoutBook.addActionListener(new CheckoutListener());
         allBookIds = new JMenuItem("All Book Ids");
         allBookIds.addActionListener(new AllBookIdsListener());
         allMemberIds = new JMenuItem("All Member Ids");
         allMemberIds.addActionListener(new AllMemberIdsListener());
-        checkoutBook = new JMenuItem("Checkout book");
-        checkoutBook.addActionListener(new CheckoutListener());
         options.add(login);
-//        if(SystemController.currentAuth != null) {
+        if (SystemController.currentAuth != null) {
             options.add(checkoutBook);
             options.add(allBookIds);
             options.add(allMemberIds);
-//        }
+        }
     }
 
     class LoginListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            LibrarySystem.hideAllWindows();
-            LoginWindow.INSTANCE.init();
-            Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
-            LoginWindow.INSTANCE.setVisible(true);
+
+            //Checking Rules
+            if (SystemController.currentAuth == null) {
+                LibrarySystem.hideAllWindows();
+                LoginWindow.INSTANCE.init();
+                Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
+                LoginWindow.INSTANCE.setVisible(true);
+
+            } else {
+                SystemController.currentAuth = null;
+            }
 
         }
 
@@ -130,9 +143,10 @@ public class LibrarySystem extends JFrame implements LibWindow {
     }
 
     class AllBookIdsListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
+
+
             LibrarySystem.hideAllWindows();
             AllBookIdsWindow.INSTANCE.init();
 
@@ -150,7 +164,6 @@ public class LibrarySystem extends JFrame implements LibWindow {
             AllBookIdsWindow.INSTANCE.setVisible(true);
 
         }
-
     }
 
     class AllMemberIdsListener implements ActionListener {

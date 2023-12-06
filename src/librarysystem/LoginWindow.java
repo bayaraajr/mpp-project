@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 
 import business.ControllerInterface;
 
+import business.LoginException;
 import business.SystemController;
 
 
@@ -61,7 +62,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 	/* This class is a singleton */
     private LoginWindow () {}
     
-    public void init() {     		
+    public void init() {
     		mainPanel = new JPanel();
     		defineUpperHalf();
     		defineMiddleHalf();
@@ -186,7 +187,21 @@ public class LoginWindow extends JFrame implements LibWindow {
     	
     	private void addLoginButtonListener(JButton butn) {
     		butn.addActionListener(evt -> {
-    			JOptionPane.showMessageDialog(this,"Successful Login");
+
+
+				try {
+					LibrarySystem.INSTANCE.ci.login(username.getText(), password.getText());
+					JOptionPane.showMessageDialog(this,"Successful Login");
+					LibrarySystem.INSTANCE.addMenuItems();
+					LibrarySystem.hideAllWindows();
+					LibrarySystem.INSTANCE.setVisible(true);
+
+//					SystemController.currentAuth
+				} catch (LoginException e) {
+					//throw new RuntimeException(e);
+					JOptionPane.showMessageDialog(this,e.getMessage());
+				}
+
     		});
     	}
 }
