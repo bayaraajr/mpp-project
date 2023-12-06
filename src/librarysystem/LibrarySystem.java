@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import business.ControllerInterface;
 import business.SystemController;
 
+import static dataaccess.Auth.LIBRARIAN;
+
 
 public class LibrarySystem extends JFrame implements LibWindow {
 	ControllerInterface ci = new SystemController();
@@ -95,6 +97,12 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+
+			//Checking Rules
+			if(SystemController.currentAuth != null && SystemController.currentAuth.equals(LIBRARIAN)) {
+
+			}
+
 			LibrarySystem.hideAllWindows();
 			LoginWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(LoginWindow.INSTANCE);

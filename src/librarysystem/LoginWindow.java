@@ -62,7 +62,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 	/* This class is a singleton */
     private LoginWindow () {}
     
-    public void init() {     		
+    public void init() {
     		mainPanel = new JPanel();
     		defineUpperHalf();
     		defineMiddleHalf();
@@ -188,17 +188,14 @@ public class LoginWindow extends JFrame implements LibWindow {
     	private void addLoginButtonListener(JButton butn) {
     		butn.addActionListener(evt -> {
 
-				SystemController sc = new SystemController();
 				try {
-					sc.login(username.getText(), password.getText());
+					LibrarySystem.INSTANCE.ci.login(username.getText(), password.getText());
 					JOptionPane.showMessageDialog(this,"Successful Login");
 				} catch (LoginException e) {
 					//throw new RuntimeException(e);
 					JOptionPane.showMessageDialog(this,e.getMessage());
 				}
 
-
-    				
     		});
     	}
 	
