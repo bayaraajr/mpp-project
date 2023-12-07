@@ -4,6 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.time.LocalDate;
+
+
+import dataaccess.CheckoutRecord;
+import dataaccess.DataAccess;
+import dataaccess.DataAccessFacade;
+
 final public class LibraryMember extends Person implements Serializable {
 	private String memberId;
 
