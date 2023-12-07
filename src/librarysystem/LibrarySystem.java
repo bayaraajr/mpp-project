@@ -140,11 +140,11 @@ public class LibrarySystem extends JFrame implements LibWindow {
         @Override
         public void actionPerformed(ActionEvent e) {
             LibrarySystem.hideAllWindows();
-
-            CheckoutBookWindow.INSTANCE.init();
+            if(!CheckoutBookWindow.INSTANCE.isInitialized())
+                CheckoutBookWindow.INSTANCE.init();
             Util.centerFrameOnDesktop(CheckoutBookWindow.INSTANCE);
             CheckoutBookWindow.INSTANCE.setVisible(true);
-
+            CheckoutBookWindow.INSTANCE.pack();
         }
 
     }
