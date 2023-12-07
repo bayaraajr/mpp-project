@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import business.ControllerInterface;
 import business.SystemController;
 
-import static dataaccess.Auth.LIBRARIAN;
+import static dataaccess.Auth.*;
 
 
 public class LibrarySystem extends JFrame implements LibWindow {
@@ -104,11 +104,17 @@ public class LibrarySystem extends JFrame implements LibWindow {
         allMemberIds = new JMenuItem("All Member Ids");
         allMemberIds.addActionListener(new AllMemberIdsListener());
         options.add(login);
+
         if (SystemController.currentAuth != null) {
-
-
-            options.add(newMember);
-            options.add(checkoutBook);
+            if(SystemController.currentAuth == BOTH){
+                options.add(checkoutBook);
+                options.add(newMember);
+            }else if (SystemController.currentAuth == LIBRARIAN) {
+                options.add(checkoutBook);
+            } else if (SystemController.currentAuth == ADMIN) {
+                options.add(newMember);
+                //Edit members
+            }
             options.add(allBookIds);
             options.add(allMemberIds);
         }
@@ -121,15 +127,18 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
             //Checking Rules
             if (SystemController.currentAuth == null) {
-                LibrarySystem.hideAllWindows();
-                if(!LoginWindow.INSTANCE.isInitialized())
-                    LoginWindow.INSTANCE.init();
-                Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
-                LoginWindow.INSTANCE.setVisible(true);
-
+                System.out.println("User is logging in");
             } else {
+                System.out.println("User is logging out");
                 SystemController.currentAuth = null;
+                addMenuItems();
             }
+
+            LibrarySystem.hideAllWindows();
+            if(!LoginWindow.INSTANCE.isInitialized())
+                LoginWindow.INSTANCE.init();
+            Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
+            LoginWindow.INSTANCE.setVisible(true);
 
         }
 
