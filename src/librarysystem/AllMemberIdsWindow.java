@@ -144,7 +144,15 @@ public class AllMemberIdsWindow extends JFrame implements LibWindow {
 				JOptionPane.showMessageDialog(this,"Select member first");
 				return;
 			}
-			System.out.println("EDIT HERE");
+
+			LibrarySystem.hideAllWindows();
+
+			if(!NewMemberWindow.INSTANCE.isInitialized())
+				NewMemberWindow.INSTANCE.init();
+			LibraryMember member = ci.getMemberById(selectedMember);
+			NewMemberWindow.INSTANCE.setFormData(member);
+			Util.centerFrameOnDesktop(NewMemberWindow.INSTANCE);
+			NewMemberWindow.INSTANCE.setVisible(true);
 		});
 	}
 

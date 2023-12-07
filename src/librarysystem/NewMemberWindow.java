@@ -1,5 +1,6 @@
 package librarysystem;
 
+import business.LibraryMember;
 import business.LoginException;
 
 import javax.swing.*;
@@ -14,6 +15,8 @@ public class NewMemberWindow extends JFrame implements LibWindow {
     private JPanel lowerPanel;
     private JPanel leftTextPanel;
     private JPanel rightTextPanel;
+
+    private LibraryMember member;
 
     private JTextField memberIdField, firstNameField, lastNameField, streetField, cityField, stateField, zipField, telephoneField;
 
@@ -67,7 +70,7 @@ public class NewMemberWindow extends JFrame implements LibWindow {
         FlowLayout fl = new FlowLayout(FlowLayout.LEFT);
         lowerPanel.setLayout(fl);
         JButton backButton = new JButton("<- Main screen");
-        JButton checkOutBookButton = new JButton("Add Member");
+        JButton checkOutBookButton = new JButton("Save Member");
 
         addBackButtonListener(backButton);
         addMemberButtonListener(checkOutBookButton);
@@ -86,6 +89,18 @@ public class NewMemberWindow extends JFrame implements LibWindow {
         stateField.setText("");
         zipField.setText("");
         telephoneField.setText("");
+    }
+
+    public void setFormData(LibraryMember m){
+
+        memberIdField.setText(m.getMemberId());
+        firstNameField.setText(m.getFirstName());
+        lastNameField.setText(m.getLastName());
+        streetField.setText(m.getAddress().getStreet());
+        cityField.setText(m.getAddress().getCity());
+        stateField.setText(m.getAddress().getState());
+        zipField.setText(m.getAddress().getZip());
+        telephoneField.setText(m.getTelephone());
     }
 
     @Override
@@ -110,6 +125,7 @@ public class NewMemberWindow extends JFrame implements LibWindow {
         butn.addActionListener(evt -> {
             LibrarySystem.hideAllWindows();
             LibrarySystem.INSTANCE.setVisible(true);
+            cleanFields();
         });
     }
     private void addMemberButtonListener(JButton butn) {
