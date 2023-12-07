@@ -57,6 +57,18 @@ public class SystemController implements ControllerInterface {
     }
 
     @Override
+    public HashMap<String, LibraryMember> allMembers() {
+        DataAccess da = new DataAccessFacade();
+        return da.readMemberMap();
+    }
+
+    @Override
+    public LibraryMember getMemberById(String memberId) {
+        DataAccess da = new DataAccessFacade();
+         return da.readMemberMap().get(memberId);
+    }
+
+    @Override
     public List<String> allBookIds() {
         DataAccess da = new DataAccessFacade();
         List<String> retval = new ArrayList<>();
@@ -68,6 +80,8 @@ public class SystemController implements ControllerInterface {
     public BookCopy checkBook(String isbn, String memberId) throws LibrarySystemException {
         DataAccess da = new DataAccessFacade();
         HashMap<String, Book> books = da.readBooksMap();
+        System.out.println(isbn);
+        System.out.println(memberId);
         if(!books.containsKey(isbn)) {
             throw new LibrarySystemException("Book not found");
         }
@@ -78,14 +92,7 @@ public class SystemController implements ControllerInterface {
         }
 
         Book book = books.get(isbn);
-        BookCopy bookCopy = null;
-        for(BookCopy copy: book.getCopies()) {
-            if(copy.isAvailable()) {
-                bookCopy = copy;
-                break;
-            };
-        }
-
+        BookCopy bookCopy = book.getNextAvailableCopy();
         if(bookCopy == null) throw new LibrarySystemException("Available copy is not found");
 
         return bookCopy;

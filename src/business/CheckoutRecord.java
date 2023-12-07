@@ -16,20 +16,12 @@ public class CheckoutRecord implements Serializable {
     private BookCopy bookCopy;
     public CheckoutRecord(LocalDate dueDate, LocalDate checkoutDate, BookCopy copy){
 
-        copy.changeAvailability();
+        copy.changeAvailability(false);
         this.bookCopy = copy;
         this.dueDate = dueDate;
         this.checkoutDate = checkoutDate;
 
     }
-
-    public CheckoutRecord(CheckoutRecord rec) {
-        this.setCheckoutDate(rec.getCheckoutDate());
-        this.setBookCopy(rec.getBookCopy());
-        this.bookCopy.changeAvailability();
-        this.setDueDate(rec.getDueDate());
-    }
-
     public LocalDate getDueDate() {
         return dueDate;
     }

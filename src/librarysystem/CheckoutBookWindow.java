@@ -2,6 +2,7 @@ package librarysystem;
 
 import business.*;
 import business.CheckoutRecord;
+import models.ReadonlyTableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -29,7 +30,7 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
 
     private JTable table;
 
-    private DefaultTableModel model;
+    private ReadonlyTableModel model;
 
     private JButton searchButton;
 
@@ -134,7 +135,7 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
         searchPanel.add(buttonPanel);
         Object[][]data = {};
 
-        model = new DefaultTableModel(data, columnNames);
+        model = new ReadonlyTableModel(data, columnNames);
         table = new JTable(model);
 //        table.setIsEditable()
         JScrollPane scrollPane = new JScrollPane(table);
@@ -171,10 +172,13 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
         butn.addActionListener(evt -> {
             String isbn = isbnTextArea.getText();
             String memberId = memberTextArea.getText();
+            System.out.println("ISBN:" + isbn);
+            System.out.println("MemberID:" + memberId);
             try {
                 BookCopy copy = ci.checkBook(isbn, memberId);
-                LocalDate dueDate =  LocalDate.of(2022, 2, 2);
-                LocalDate checkOut =  LocalDate.now();
+
+                LocalDate checkOut = LocalDate.now();
+                LocalDate dueDate =  LocalDate.of(checkOut.getYear(), checkOut.getMonth(), checkOut.getDayOfMonth()).plusDays(21);
                 CheckoutRecord rec = new CheckoutRecord(dueDate, checkOut, copy);
                 Object row = new Object[]{isbn, copy.getBook().getTitle(), memberId, memberId, dueDate.toString()};
                 model.addRow((Object[]) row);
