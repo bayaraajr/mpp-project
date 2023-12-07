@@ -178,7 +178,7 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
                 BookCopy copy = ci.checkBook(isbn, memberId);
 
                 LocalDate checkOut = LocalDate.now();
-                LocalDate dueDate =  LocalDate.of(checkOut.getYear(), checkOut.getMonth(), checkOut.getDayOfMonth()).plusDays(21);
+                LocalDate dueDate =  LocalDate.of(checkOut.getYear(), checkOut.getMonth(), checkOut.getDayOfMonth()).plusDays(copy.getBook().getMaxCheckoutLength());
                 CheckoutRecord rec = new CheckoutRecord(dueDate, checkOut, copy);
                 Object row = new Object[]{isbn, copy.getBook().getTitle(), memberId, memberId, dueDate.toString()};
                 model.addRow((Object[]) row);

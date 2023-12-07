@@ -63,6 +63,12 @@ public class SystemController implements ControllerInterface {
     }
 
     @Override
+    public HashMap<String, Book> allBooks() {
+        DataAccess da = new DataAccessFacade();
+        return da.readBooksMap();
+    }
+
+    @Override
     public LibraryMember getMemberById(String memberId) {
         DataAccess da = new DataAccessFacade();
          return da.readMemberMap().get(memberId);
