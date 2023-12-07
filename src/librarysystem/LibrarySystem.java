@@ -105,6 +105,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
         allMemberIds.addActionListener(new AllMemberIdsListener());
         options.add(login);
         if (SystemController.currentAuth != null) {
+
+
             options.add(newMember);
             options.add(checkoutBook);
             options.add(allBookIds);
@@ -120,7 +122,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
             //Checking Rules
             if (SystemController.currentAuth == null) {
                 LibrarySystem.hideAllWindows();
-                LoginWindow.INSTANCE.init();
+                if(!LoginWindow.INSTANCE.isInitialized())
+                    LoginWindow.INSTANCE.init();
                 Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
                 LoginWindow.INSTANCE.setVisible(true);
 
