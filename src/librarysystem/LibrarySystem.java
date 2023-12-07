@@ -152,10 +152,11 @@ public class LibrarySystem extends JFrame implements LibWindow {
         public void actionPerformed(ActionEvent e) {
             LibrarySystem.hideAllWindows();
 
-            NewMemberWindow.INSTANCE.init();
+            if(!NewMemberWindow.INSTANCE.isInitialized())
+                NewMemberWindow.INSTANCE.init();
+
             Util.centerFrameOnDesktop(NewMemberWindow.INSTANCE);
             NewMemberWindow.INSTANCE.setVisible(true);
-
         }
 
     }
@@ -166,6 +167,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
 
             LibrarySystem.hideAllWindows();
+            if(!AllBookIdsWindow.INSTANCE.isInitialized())
+                AllBookIdsWindow.INSTANCE.init();
             AllBookIdsWindow.INSTANCE.init();
 
             List<String> ids = ci.allBookIds();
@@ -189,7 +192,9 @@ public class LibrarySystem extends JFrame implements LibWindow {
         @Override
         public void actionPerformed(ActionEvent e) {
             LibrarySystem.hideAllWindows();
-            AllMemberIdsWindow.INSTANCE.init();
+            if(!AllMemberIdsWindow.INSTANCE.isInitialized())
+                AllMemberIdsWindow.INSTANCE.init();
+
             AllMemberIdsWindow.INSTANCE.pack();
             AllMemberIdsWindow.INSTANCE.setVisible(true);
 

@@ -1,5 +1,7 @@
 package librarysystem;
 
+import business.LoginException;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -74,7 +76,7 @@ public class NewMemberWindow extends JFrame implements LibWindow {
 
     }
 
-    private void clearForm() {
+    private void cleanFields() {
         // Clear all text fields after submission
         memberIdField.setText("");
         firstNameField.setText("");
@@ -99,7 +101,7 @@ public class NewMemberWindow extends JFrame implements LibWindow {
         mainPanel.add(lowerPanel, BorderLayout.SOUTH);
         getContentPane().add(mainPanel);
 
-        setSize(330, 500);
+        setSize(330, 350);
         isInitialized = true;
 
     }
@@ -112,10 +114,29 @@ public class NewMemberWindow extends JFrame implements LibWindow {
     }
     private void addMemberButtonListener(JButton butn) {
         butn.addActionListener(evt -> {
-            clearForm();
-            JOptionPane.showMessageDialog(this,"Successful Added");
-            LibrarySystem.hideAllWindows();
-            LibrarySystem.INSTANCE.setVisible(true);
+
+
+            try {
+                LibrarySystem.INSTANCE.ci.saveMember(
+                        memberIdField.getText(),
+                        firstNameField.getText(),
+                        lastNameField.getText(),
+                        streetField.getText(),
+                        cityField.getText(),
+                        stateField.getText(),
+                        zipField.getText(),
+                        telephoneField.getText());
+
+                cleanFields();
+                JOptionPane.showMessageDialog(this,"Successful Added");
+                LibrarySystem.hideAllWindows();
+                LibrarySystem.INSTANCE.setVisible(true);
+
+//					SystemController.currentAuth
+            } catch (Exception e) {
+                //throw new RuntimeException(e);
+                JOptionPane.showMessageDialog(this,e.getMessage());
+            }
         });
     }
 

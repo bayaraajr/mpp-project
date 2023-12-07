@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6278deac-b002-4449-8bad-63b2dba0b9a0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/CheckoutTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/business/ControllerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/business/ControllerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/business/SystemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/business/SystemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dataaccess/storage/MEMBERS" beforeDir="false" afterPath="$PROJECT_DIR$/src/dataaccess/storage/MEMBERS" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/librarysystem/LibrarySystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/librarysystem/LibrarySystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/librarysystem/LoginWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/librarysystem/LoginWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/librarysystem/NewMemberWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/librarysystem/NewMemberWindow.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +41,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging main",
+    "git-widget-placeholder": "main",
     "jdk.selected.JAVA_MODULE": "17",
     "last_opened_file_path": "/Users/sainzayabatkhuu/Desktop/mpp-project",
     "node.js.detected.package.eslint": "true",

@@ -44,7 +44,7 @@ public class SystemController implements ControllerInterface {
 	@Override
 	public void saveMember(
 			String memberId,
-			String firname,
+			String firstname,
 			String lastname,
 			String street,
 			String city,
@@ -55,6 +55,8 @@ public class SystemController implements ControllerInterface {
 		//add a memeber
 		DataAccess da = new DataAccessFacade();
 		// save to data
+		da.saveNewMember(new LibraryMember(memberId,firstname,lastname,telephone, new Address(street,city,state,zip)));
+
 	}
 
 	@Override
