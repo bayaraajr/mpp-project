@@ -42,6 +42,22 @@ public class SystemController implements ControllerInterface {
 	}
 
 	@Override
+	public void saveMember(
+			String memberId,
+			String firname,
+			String lastname,
+			String street,
+			String city,
+			String state,
+			String zip,
+			String telephone
+	) {
+		//add a memeber
+		DataAccess da = new DataAccessFacade();
+		// save to data
+	}
+
+	@Override
 	public void checkoutBook() {
 
 	}

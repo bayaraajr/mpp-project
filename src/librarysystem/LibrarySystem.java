@@ -30,13 +30,14 @@ public class LibrarySystem extends JFrame implements LibWindow {
     JPanel mainPanel;
     JMenuBar menuBar;
     JMenu options;
-    JMenuItem login, allBookIds, allMemberIds, checkoutBook;
+    JMenuItem login, allBookIds, allMemberIds, checkoutBook, newMember;
     String pathToImage;
     private boolean isInitialized = false;
 
     private static LibWindow[] allWindows = {
             LibrarySystem.INSTANCE,
             LoginWindow.INSTANCE,
+            NewMemberWindow.INSTANCE,
             CheckoutBookWindow.INSTANCE,
             AllMemberIdsWindow.INSTANCE,
             AllBookIdsWindow.INSTANCE
@@ -96,12 +97,15 @@ public class LibrarySystem extends JFrame implements LibWindow {
         login.addActionListener(new LoginListener());
         checkoutBook = new JMenuItem("Checkout");
         checkoutBook.addActionListener(new CheckoutListener());
+        newMember = new JMenuItem("New Member");
+        newMember.addActionListener(new NewMemberListener());
         allBookIds = new JMenuItem("All Book Ids");
         allBookIds.addActionListener(new AllBookIdsListener());
         allMemberIds = new JMenuItem("All Member Ids");
         allMemberIds.addActionListener(new AllMemberIdsListener());
         options.add(login);
         if (SystemController.currentAuth != null) {
+            options.add(newMember);
             options.add(checkoutBook);
             options.add(allBookIds);
             options.add(allMemberIds);
@@ -137,6 +141,20 @@ public class LibrarySystem extends JFrame implements LibWindow {
             CheckoutBookWindow.INSTANCE.init();
             Util.centerFrameOnDesktop(CheckoutBookWindow.INSTANCE);
             CheckoutBookWindow.INSTANCE.setVisible(true);
+
+        }
+
+    }
+
+    class NewMemberListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LibrarySystem.hideAllWindows();
+
+            NewMemberWindow.INSTANCE.init();
+            Util.centerFrameOnDesktop(NewMemberWindow.INSTANCE);
+            NewMemberWindow.INSTANCE.setVisible(true);
 
         }
 

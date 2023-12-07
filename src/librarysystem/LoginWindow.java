@@ -124,7 +124,10 @@ public class LoginWindow extends JFrame implements LibWindow {
     		
     	}
     	
-    	
+    	private void cleanFields() {
+			username.setText("");
+			password.setText("");
+		}
     	
     	private void defineMiddlePanel() {
     		middlePanel=new JPanel();
@@ -192,6 +195,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 				try {
 					LibrarySystem.INSTANCE.ci.login(username.getText(), password.getText());
 					JOptionPane.showMessageDialog(this,"Successful Login");
+					cleanFields();
 					LibrarySystem.INSTANCE.addMenuItems();
 					LibrarySystem.hideAllWindows();
 					LibrarySystem.INSTANCE.setVisible(true);
