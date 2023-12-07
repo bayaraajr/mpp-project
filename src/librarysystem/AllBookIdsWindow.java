@@ -5,16 +5,14 @@ import java.awt.FlowLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-import business.ControllerInterface;
-import business.SystemController;
+import business.*;
+import models.ReadonlyTableModel;
 
 
 public class AllBookIdsWindow extends JFrame implements LibWindow {
@@ -28,8 +26,12 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 	private JPanel middlePanel;
 	private JPanel lowerPanel;
 	private TextArea textArea;
-	
 
+	private ReadonlyTableModel tableModel;
+
+	private JTable table;
+
+	private static String[] columnNames = {"ISBN", "Title", "Authors", "Number for copies", "Available copies", "Max checkout length"};
 	//Singleton class
 	private AllBookIdsWindow() {}
 	
@@ -44,6 +46,8 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 		mainPanel.add(lowerPanel, BorderLayout.SOUTH);
 		getContentPane().add(mainPanel);
 		isInitialized = true;
+		setSize(960, 600);
+		readBooks();
 	}
 	
 	public void defineTopPanel() {
@@ -58,9 +62,13 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 		middlePanel = new JPanel();
 		FlowLayout fl = new FlowLayout(FlowLayout.CENTER, 25, 25);
 		middlePanel.setLayout(fl);
-		textArea = new TextArea(8, 20);
+		Object[][]data ={ };
+		tableModel = new ReadonlyTableModel(data, columnNames);
+		table = new JTable(tableModel);
 		//populateTextArea();
-		middlePanel.add(textArea);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		middlePanel.add(scrollPane);
 		
 	}
 	
@@ -71,6 +79,27 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 		lowerPanel = new JPanel();
 		lowerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));;
 		lowerPanel.add(backToMainButn);
+	}
+
+	public void readBooks() {
+		HashMap<String, Book> books = ci.allBooks();
+		books.forEach((isbn, book) -> {
+			String authors = "";
+			List<String> authorNames = new ArrayList<>();
+			book.getAuthors().forEach(author -> {
+				authorNames.add(author.getFirstName() + " " + author.getLastName());
+			});
+
+			authors = String.join(",", authorNames);
+
+			int availablaeCopies = 0;
+			for (BookCopy copy : book.getCopies()) {
+				if(copy.isAvailable()) availablaeCopies++;
+			}
+
+			Object[] data = new Object[]{ isbn,book.getTitle(),  authors, book.getCopies().length, availablaeCopies,book.getMaxCheckoutLength()  };
+			tableModel.addRow((Object[]) data);
+		});
 	}
 	
 	class BackToMainListener implements ActionListener {
@@ -83,7 +112,7 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 	}
 	
 	public void setData(String data) {
-		textArea.setText(data);
+//		textArea.setText(data);
 	}
 	
 //	private void populateTextArea() {

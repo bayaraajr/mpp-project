@@ -37,6 +37,7 @@ public class MemberCheckoutListWindow extends JFrame implements LibWindow{
     private MemberCheckoutListWindow() {}
 
     public void init() {
+        setSize(960, 600);
         member = null;
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -47,6 +48,7 @@ public class MemberCheckoutListWindow extends JFrame implements LibWindow{
         mainPanel.add(middlePanel, BorderLayout.CENTER);
         mainPanel.add(lowerPanel, BorderLayout.SOUTH);
         getContentPane().add(mainPanel);
+
         isInitialized = true;
         readCheckoutList();
     }

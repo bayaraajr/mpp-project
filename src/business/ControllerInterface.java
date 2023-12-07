@@ -13,6 +13,8 @@ public interface ControllerInterface {
 
 	public HashMap<String, LibraryMember> allMembers();
 
+	public HashMap<String, Book> allBooks();
+
 	public LibraryMember getMemberById(String memberId);
 	public List<String> allBookIds();
 

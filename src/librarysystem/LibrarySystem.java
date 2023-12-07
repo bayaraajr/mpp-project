@@ -99,9 +99,9 @@ public class LibrarySystem extends JFrame implements LibWindow {
         checkoutBook.addActionListener(new CheckoutListener());
         newMember = new JMenuItem("New Member");
         newMember.addActionListener(new NewMemberListener());
-        allBookIds = new JMenuItem("All Book Ids");
+        allBookIds = new JMenuItem("Book list");
         allBookIds.addActionListener(new AllBookIdsListener());
-        allMemberIds = new JMenuItem("All Member Ids");
+        allMemberIds = new JMenuItem("Member list");
         allMemberIds.addActionListener(new AllMemberIdsListener());
         options.add(login);
         if (SystemController.currentAuth != null) {
@@ -181,7 +181,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
                 sb.append(s + "\n");
             }
             System.out.println(sb.toString());
-            AllBookIdsWindow.INSTANCE.setData(sb.toString());
+//            AllBookIdsWindow.INSTANCE.setData(sb.toString());
             AllBookIdsWindow.INSTANCE.pack();
             //AllBookIdsWindow.INSTANCE.setSize(660,500);
             Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
