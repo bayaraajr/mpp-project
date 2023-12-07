@@ -157,7 +157,7 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
 
         addBackButtonListener(backButton);
         lowerPanel.add(backButton);
-//        lowerPanel.add(checkOutBookButton);
+        lowerPanel.add(checkOutBookButton);
 
     }
 
@@ -194,7 +194,7 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
             this.records.clear();
             this.memberTextArea.setText("");
             this.isbnTextArea.setText("");
-
+            JOptionPane.showMessageDialog(this, "Successfully added checkout record");
         });
     }
 
