@@ -30,7 +30,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
     JPanel mainPanel;
     JMenuBar menuBar;
     JMenu options;
-    JMenuItem login, allBookIds, allMemberIds, checkoutBook, newMember;
+    JMenuItem login, allBookIds, allMemberIds, checkoutBook, newMember, addBookCopy;
     String pathToImage;
     private boolean isInitialized = false;
 
@@ -40,7 +40,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
             NewMemberWindow.INSTANCE,
             CheckoutBookWindow.INSTANCE,
             AllMemberIdsWindow.INSTANCE,
-            AllBookIdsWindow.INSTANCE
+            AllBookIdsWindow.INSTANCE,
+            AddBookCopyWindow.INSTANCE
     };
 
     public static void hideAllWindows() {
@@ -89,31 +90,42 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
     void addMenuItems() {
 
-        if (options != null) menuBar.remove(options);
+        if (options != null)
+            menuBar.remove(options);
 
         options = new JMenu("Options");
         menuBar.add(options);
+
         login = new JMenuItem(SystemController.currentAuth != null ? "Logout" : "Login");
         login.addActionListener(new LoginListener());
+
         checkoutBook = new JMenuItem("Checkout");
         checkoutBook.addActionListener(new CheckoutListener());
+
+        addBookCopy = new JMenuItem("Add Book Copy");
+        addBookCopy.addActionListener(new addBookCopyListener());
+
         newMember = new JMenuItem("New Member");
         newMember.addActionListener(new NewMemberListener());
+
         allBookIds = new JMenuItem("Book list");
         allBookIds.addActionListener(new AllBookIdsListener());
+
         allMemberIds = new JMenuItem("Member list");
         allMemberIds.addActionListener(new AllMemberIdsListener());
+
         options.add(login);
 
         if (SystemController.currentAuth != null) {
             if(SystemController.currentAuth == BOTH){
                 options.add(checkoutBook);
                 options.add(newMember);
+                options.add(addBookCopy);
             }else if (SystemController.currentAuth == LIBRARIAN) {
                 options.add(checkoutBook);
             } else if (SystemController.currentAuth == ADMIN) {
                 options.add(newMember);
-                //Edit members
+                options.add(addBookCopy);
             }
             options.add(allBookIds);
             options.add(allMemberIds);
@@ -140,6 +152,20 @@ public class LibrarySystem extends JFrame implements LibWindow {
             Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
             LoginWindow.INSTANCE.setVisible(true);
 
+        }
+
+    }
+
+    class addBookCopyListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LibrarySystem.hideAllWindows();
+            if(!AddBookCopyWindow.INSTANCE.isInitialized())
+                AddBookCopyWindow.INSTANCE.init();
+            Util.centerFrameOnDesktop(AddBookCopyWindow.INSTANCE);
+            AddBookCopyWindow.INSTANCE.setVisible(true);
+            AddBookCopyWindow.INSTANCE.pack();
         }
 
     }

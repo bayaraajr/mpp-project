@@ -47,6 +47,31 @@ public class SystemController implements ControllerInterface {
 	public void checkoutBook() {
 
     }
+//    public void login(String id, String password) throws LoginException {
+//        DataAccess da = new DataAccessFacade();
+//        HashMap<String, User> map = da.readUserMap();
+//        if (!map.containsKey(id)) {
+//            throw new LoginException("ID " + id + " not found");
+//        }
+//        String passwordFound = map.get(id).getPassword();
+//        if (!passwordFound.equals(password)) {
+//            throw new LoginException("Password incorrect");
+//        }
+//        currentAuth = map.get(id).getAuthorization();
+//    }
+    @Override
+    public boolean addBookCopy(String isbn){
+        DataAccess da = new DataAccessFacade();
+        HashMap<String, Book> books = da.readBooksMap();
+
+        if(books.containsKey(isbn)){
+            Book book = books.get(isbn);
+            book.addCopy();
+            da.saveNewMember(book);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public List<String> allMemberIds() {
