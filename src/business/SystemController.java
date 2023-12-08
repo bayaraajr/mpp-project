@@ -56,8 +56,15 @@ public class SystemController implements ControllerInterface {
 			String telephone
 	) {
 		DataAccess da = new DataAccessFacade();
+        if (memberId == null || memberId.equalsIgnoreCase("")){
+            memberId = da.getNewMemberId();
+        }
 		// save to data
-		da.saveNewMember(new LibraryMember(memberId,firstname,lastname,telephone, new Address(street,city,state,zip)));
+        LibraryMember member = new LibraryMember(memberId,firstname,lastname,telephone, new Address(street,city,state,zip));
+        HashMap<String, LibraryMember> mems = da.readMemberMap();
+        mems.put(memberId, member);
+
+		da.saveMembers(mems);
 
 	}
 
