@@ -41,8 +41,7 @@ public class MemberRuleSet implements RuleSet {
     }
 
     private void noneEmptyRule() throws RuleException {
-        if(this.newMemberWindow.getMemberId().trim().isEmpty()
-                || this.newMemberWindow.getFirstNameField().trim().isEmpty()
+        if(this.newMemberWindow.getFirstNameField().trim().isEmpty()
                 || this.newMemberWindow.getLastNameField().trim().isEmpty()
                 || this.newMemberWindow.gertStreetField().trim().isEmpty()
                 || this.newMemberWindow.gertCityField().trim().isEmpty()

@@ -25,6 +25,6 @@ public interface ControllerInterface {
 	public BookCopy checkBook(String isbn, String member) throws LibrarySystemException;
 
 	public void checkoutBooks(List<CheckoutRecord> list, String memberId);
-	public void saveMember(String memberId,String firstname,String lastname,String street,String city,String state,String zip,String telephone);
+	public void saveMember(LibraryMember member);
 	
 }

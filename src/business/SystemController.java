@@ -36,29 +36,20 @@ public class SystemController implements ControllerInterface {
     /**
      *  This is insert member function. The information below is required.
      *
-     * @param memberId
-     * @param firstname
-     * @param lastname
-     * @param street
-     * @param city
-     * @param state
-     * @param zip
-     * @param telephone
+     * @param member LibraryMember instance
      */
 	@Override
 	public void saveMember(
-			String memberId,
-            String firstname,
-            String lastname,
-            String street,
-            String city,
-            String state,
-            String zip,
-            String telephone
+			LibraryMember member
 	) {
 		DataAccess da = new DataAccessFacade();
-		// save to data
-		da.saveNewMember(new LibraryMember(memberId,firstname,lastname,telephone, new Address(street,city,state,zip)));
+        if (member.getMemberId() == null || member.getMemberId().equalsIgnoreCase("")){
+            member.setMemberId(da.getNewMemberId());
+        }
+        HashMap<String, LibraryMember> mems = da.readMemberMap();
+        mems.put(member.getMemberId(), member);
+
+		da.saveMembers(mems);
 
 	}
 

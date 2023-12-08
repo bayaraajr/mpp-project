@@ -26,13 +26,16 @@ public class DataAccessFacade implements DataAccess {
 	static Path fullPath = Paths.get(currDirectory, "src", "dataaccess", "storage");
 	public static final String OUTPUT_DIR = fullPath.toString();
 	public static final String DATE_PATTERN = "MM/dd/yyyy";
-	
-	//implement: other save operations
-	public void saveNewMember(LibraryMember member) {
-		HashMap<String, LibraryMember> mems = readMemberMap();
-		String memberId = member.getMemberId();
-		mems.put(memberId, member);
-		saveToStorage(StorageType.MEMBERS, mems);	
+
+	public String getNewMemberId(){
+		int key = 1000;
+
+		HashMap<String, LibraryMember> map = readMemberMap();
+		for (String item : map.keySet()) {
+			key = Math.max(key, Integer.parseInt(item));
+		}
+
+		return String.valueOf(key + 1);
 	}
 
 	@Override

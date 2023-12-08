@@ -1,5 +1,6 @@
 package librarysystem;
 
+import business.Address;
 import business.LibraryMember;
 import business.LoginException;
 import rulesets.MemberRuleSet;
@@ -70,6 +71,7 @@ public class NewMemberWindow extends JFrame implements LibWindow {
 
 
         memberIdField = new JTextField(10);
+        memberIdField.setEditable(false);
         firstNameField = new JTextField(10);
         lastNameField = new JTextField(10);
         streetField = new JTextField(10);
@@ -170,15 +172,9 @@ public class NewMemberWindow extends JFrame implements LibWindow {
                 MemberRuleSet rules = (MemberRuleSet) RuleSetFactory.getRuleSet(NewMemberWindow.this);
                 rules.applyRules(NewMemberWindow.this);
 
-                LibrarySystem.INSTANCE.ci.saveMember(
-                        memberIdField.getText(),
-                        firstNameField.getText(),
-                        lastNameField.getText(),
-                        streetField.getText(),
-                        cityField.getText(),
-                        stateField.getText(),
-                        zipField.getText(),
-                        telephoneField.getText());
+                Address address = new Address(streetField.getText(), cityField.getText(), stateField.getText(), zipField.getText());
+                LibraryMember member = new LibraryMember("", firstNameField.getText(), lastNameField.getText(), telephoneField.getText(), address);
+                LibrarySystem.INSTANCE.ci.saveMember(member);
 
                 cleanFields();
                 JOptionPane.showMessageDialog(this,"Successful Added");
