@@ -35,30 +35,38 @@ public class SystemController implements ControllerInterface {
 			String state,
 			String zip,
 			String telephone
-	) {
-		//add a memeber
+	)
+    {
+		//add a member
 		DataAccess da = new DataAccessFacade();
 		// save to data
 		da.saveNewMember(new LibraryMember(memberId,firstname,lastname,telephone, new Address(street,city,state,zip)));
 
 	}
 
-	@Override
-	public void checkoutBook() {
+    @Override
+    public void checkoutBook() {
 
     }
-//    public void login(String id, String password) throws LoginException {
-//        DataAccess da = new DataAccessFacade();
-//        HashMap<String, User> map = da.readUserMap();
-//        if (!map.containsKey(id)) {
-//            throw new LoginException("ID " + id + " not found");
-//        }
-//        String passwordFound = map.get(id).getPassword();
-//        if (!passwordFound.equals(password)) {
-//            throw new LoginException("Password incorrect");
-//        }
-//        currentAuth = map.get(id).getAuthorization();
-//    }
+
+    @Override
+    public void saveBook(String isbn, String title, int maximum_checkout_length,
+                         List<Author> authors, int number_of_copies)
+    {
+        Book b = new Book(isbn,title,maximum_checkout_length,authors);
+        if(number_of_copies>1){
+            for (int i = 1; i < number_of_copies; i++) {
+                b.addCopy();
+            }
+        }
+        //add a member
+        DataAccessFacade da = new DataAccessFacade();
+        // save to data
+        da.saveBook(b);
+
+    }
+
+
     @Override
     public boolean addBookCopy(String isbn){
         DataAccess da = new DataAccessFacade();
@@ -67,7 +75,7 @@ public class SystemController implements ControllerInterface {
         if(books.containsKey(isbn)){
             Book book = books.get(isbn);
             book.addCopy();
-            da.saveNewMember(book);
+            da.saveBook(book);
             return true;
         }
         return false;
