@@ -53,16 +53,17 @@ public class AllMemberIdsWindow extends JFrame implements LibWindow {
 		//readMembers();
 	}
 
-	public void readMembers() {
-		HashMap<String, LibraryMember> members = ci.allMembers();
-		while (tableModel.getRowCount()>0)
-		{
-			tableModel.removeRow(0);
-		}
-		members.forEach((memberId, member) -> {
-			Object[] data = new Object[]{ memberId,  member.getFirstName(), member.getLastName(), member.getTelephone()  };
-			tableModel.addRow((Object[]) data);
-		});
+
+
+		public void readMembers() {
+			HashMap<String, LibraryMember> members = ci.allMembers();
+
+			tableModel.setRowCount(0);
+			members.forEach((memberId, member) -> {
+				System.out.println(member);
+				Object[] data = new Object[]{ memberId,  member.getFirstName(), member.getLastName(), member.getTelephone()  };
+				tableModel.addRow((Object[]) data);
+			});
 
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -72,11 +73,16 @@ public class AllMemberIdsWindow extends JFrame implements LibWindow {
 					if (selectedRow != -1) {
 						// Perform your action here, e.g., get data from the selected row
 						String memberId = (String) table.getValueAt(selectedRow, 0);
-						selectedMember = memberId;
+						AllMemberIdsWindow.INSTANCE.setSelectedMember(memberId);
+						System.out.println("SELECTED: " + memberId);
 					}
 				}
 			}
 		});
+	}
+	public void setSelectedMember(String str) {this.selectedMember = str;}
+	public String getMemberId() {
+		return this.selectedMember;
 	}
 	
 	public void defineTopPanel() {
@@ -127,14 +133,17 @@ public class AllMemberIdsWindow extends JFrame implements LibWindow {
 	}
 	private void addCheckoutButtonListener(JButton butn) {
 		butn.addActionListener(evt -> {
-			if(selectedMember == null) {
+
+			String memberId = AllMemberIdsWindow.INSTANCE.getMemberId();
+			if(memberId == null) {
 				JOptionPane.showMessageDialog(this,"Select member first");
 				return;
 			}
+			LibraryMember member = ci.getMemberById(memberId);
 			if(!MemberCheckoutListWindow.INSTANCE.isInitialized())
+			{
 				MemberCheckoutListWindow.INSTANCE.init();
-			LibraryMember member = ci.getMemberById(selectedMember);
-			System.out.println(member.getFirstName());
+			}
 			MemberCheckoutListWindow.INSTANCE.setMember(member);
 			MemberCheckoutListWindow.INSTANCE.setVisible(true);
 			MemberCheckoutListWindow.INSTANCE.readCheckoutList();

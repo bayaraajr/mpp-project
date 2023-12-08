@@ -35,8 +35,8 @@ final public class BookCopy implements Serializable {
 		return book;
 	}
 	
-	public void changeAvailability(boolean isAvailable) {
-		this.isAvailable = isAvailable;
+	public void changeAvailability(boolean av) {
+		this.isAvailable = av;
 	}
 
 	@Override

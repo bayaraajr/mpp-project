@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CheckoutBookWindow extends JFrame implements LibWindow {
@@ -153,9 +154,8 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
         lowerPanel.setLayout(fl);
         JButton backButton = new JButton("Main screen");
         JButton checkOutBookButton = new JButton("Check out");
+        checkOutBookButton.setBackground(new Color(200, 200, 200));
         addCheckoutListener(checkOutBookButton);
-        checkOutBookButton.setBackground(new Color(2));
-
         addBackButtonListener(backButton);
         lowerPanel.add(backButton);
         lowerPanel.add(checkOutBookButton);
@@ -164,6 +164,10 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
 
     private void addBackButtonListener(JButton butn) {
         butn.addActionListener(evt -> {
+            isbnTextArea.setText("");
+            memberTextArea.setText("");
+            model.setRowCount(0);
+            records.clear();
             LibrarySystem.hideAllWindows();
             LibrarySystem.INSTANCE.setVisible(true);
         });
@@ -199,6 +203,14 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
             this.memberTextArea.setText("");
             this.isbnTextArea.setText("");
             JOptionPane.showMessageDialog(this, "Successfully added checkout record");
+
+             HashMap<String, LibraryMember> members = ci.allMembers();
+             members.forEach((id, member) -> {
+                 System.out.println("MEMBER: " + id);
+                 if(member.getCheckoutRecords() != null)
+                 System.out.println(member.getCheckoutRecords().size());
+                 else System.out.println("Is not init");
+             });
         });
     }
 
