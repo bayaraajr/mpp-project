@@ -2,6 +2,8 @@ package librarysystem;
 
 import business.LibraryMember;
 import business.LoginException;
+import rulesets.MemberRuleSet;
+import rulesets.RuleSetFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +23,38 @@ public class NewMemberWindow extends JFrame implements LibWindow {
     private JTextField memberIdField, firstNameField, lastNameField, streetField, cityField, stateField, zipField, telephoneField;
 
     private boolean isInitialized;
+
+    public  String getMemberId(){
+        return this.memberIdField.getText();
+    }
+
+    public  String getFirstNameField(){
+        return this.firstNameField.getText();
+    }
+
+    public  String getLastNameField(){
+        return this.lastNameField.getText();
+    }
+
+    public  String gertStreetField(){
+        return this.streetField.getText();
+    }
+
+    public  String gertCityField(){
+        return this.cityField.getText();
+    }
+
+    public  String getStateField(){
+        return this.stateField.getText();
+    }
+
+    public  String getZipField(){
+        return this.zipField.getText();
+    }
+
+    public  String getTelephoneField(){
+        return this.telephoneField.getText();
+    }
 
     public void defineTopPanel() {
         topPanel = new JPanel();
@@ -61,7 +95,6 @@ public class NewMemberWindow extends JFrame implements LibWindow {
         middlePanel.add(zipField);
         middlePanel.add(new JLabel("Telephone:"));
         middlePanel.add(telephoneField);
-
 
     }
 
@@ -133,6 +166,10 @@ public class NewMemberWindow extends JFrame implements LibWindow {
 
 
             try {
+
+                MemberRuleSet rules = (MemberRuleSet) RuleSetFactory.getRuleSet(NewMemberWindow.this);
+                rules.applyRules(NewMemberWindow.this);
+
                 LibrarySystem.INSTANCE.ci.saveMember(
                         memberIdField.getText(),
                         firstNameField.getText(),
