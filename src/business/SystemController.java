@@ -68,7 +68,7 @@ public class SystemController implements ControllerInterface {
         HashMap<String, Book> books = da.readBooksMap();
         HashMap<String, LibraryMember> members = da.readMemberMap();
         Book book = books.get(isbn);
-        System.out.println("BOOK: " + book.getIsbn());
+
         for (BookCopy copy : book.getCopies()) {
             if(copy.getCopyNum() == copyNum) {
                 System.out.println("COPY: " + copy.getCopyNum());
@@ -76,7 +76,6 @@ public class SystemController implements ControllerInterface {
             }
         }
         da.saveBooks(books);
-
         CheckoutRecord rec = member.getCheckoutRecords().stream().filter((record) -> record.getBookCopy().getCopyNum() == copyNum && record.getBookCopy().getBook().getIsbn().equals(isbn)).findFirst().orElse(null);
         member.getCheckoutRecords().remove(rec);
         members.put(member.getMemberId(), member);
