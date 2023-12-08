@@ -50,11 +50,15 @@ public class AllMemberIdsWindow extends JFrame implements LibWindow {
 		mainPanel.add(lowerPanel, BorderLayout.SOUTH);
 		getContentPane().add(mainPanel);
 		isInitialized = true;
-		readMembers();
+		//readMembers();
 	}
 
 	public void readMembers() {
 		HashMap<String, LibraryMember> members = ci.allMembers();
+		while (tableModel.getRowCount()>0)
+		{
+			tableModel.removeRow(0);
+		}
 		members.forEach((memberId, member) -> {
 			Object[] data = new Object[]{ memberId,  member.getFirstName(), member.getLastName(), member.getTelephone()  };
 			tableModel.addRow((Object[]) data);
