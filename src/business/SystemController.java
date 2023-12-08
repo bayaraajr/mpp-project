@@ -8,6 +8,7 @@ import dataaccess.Auth;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 import dataaccess.User;
+import librarysystem.LibrarySystem;
 
 public class SystemController implements ControllerInterface {
     public static Auth currentAuth = null;
@@ -62,8 +63,24 @@ public class SystemController implements ControllerInterface {
 	}
 
     @Override
-    public void checkoutBook() {
+    public void returnBook(String isbn, int copyNum, LibraryMember member) {
+        DataAccess da = new DataAccessFacade();
+        HashMap<String, Book> books = da.readBooksMap();
+        HashMap<String, LibraryMember> members = da.readMemberMap();
+        Book book = books.get(isbn);
+        System.out.println("BOOK: " + book.getIsbn());
+        for (BookCopy copy : book.getCopies()) {
+            if(copy.getCopyNum() == copyNum) {
+                System.out.println("COPY: " + copy.getCopyNum());
+                copy.changeAvailability(true);
+            }
+        }
+        da.saveBooks(books);
 
+        CheckoutRecord rec = member.getCheckoutRecords().stream().filter((record) -> record.getBookCopy().getCopyNum() == copyNum && record.getBookCopy().getBook().getIsbn().equals(isbn)).findFirst().orElse(null);
+        member.getCheckoutRecords().remove(rec);
+        members.put(member.getMemberId(), member);
+        da.saveMembers(members);
     }
 
     @Override
@@ -108,7 +125,7 @@ public class SystemController implements ControllerInterface {
 
     /**
      * This is return all members list.
-     * @return
+     * @return HashMap
      */
     @Override
     public HashMap<String, LibraryMember> allMembers() {
@@ -118,10 +135,9 @@ public class SystemController implements ControllerInterface {
 
     /**
      *
-     * This will fetch the information on memberId.
-     *
-     * @param memberId
-     * @return
+     * @Description Returns all the books in storage file.
+     * @param
+     * @return Book list
      */
     @Override
     public HashMap<String, Book> allBooks() {
@@ -129,10 +145,15 @@ public class SystemController implements ControllerInterface {
         return da.readBooksMap();
     }
 
+    /**
+     * @Description Searches for member and returns if available
+     * @param memberId Library member ID
+     * @return
+     */
     @Override
     public LibraryMember getMemberById(String memberId) {
         DataAccess da = new DataAccessFacade();
-         return da.readMemberMap().get(memberId);
+        return da.readMemberMap().get(memberId);
     }
 
     @Override
@@ -143,6 +164,14 @@ public class SystemController implements ControllerInterface {
         return retval;
     }
 
+    /**
+     * @Description Checks if specified book's copy available or not.
+     * If the book copy is available change it to unavailable and store the books to storage
+     * @param isbn Book ISBN
+     * @param memberId Library member ID
+     * @return BookCopy - book copy instance
+     * @throws LibrarySystemException
+     */
     @Override
     public BookCopy checkBook(String isbn, String memberId) throws LibrarySystemException {
         DataAccess da = new DataAccessFacade();
@@ -159,17 +188,28 @@ public class SystemController implements ControllerInterface {
         }
 
         Book book = books.get(isbn);
-        BookCopy bookCopy = book.getNextAvailableCopy();
-        if(bookCopy == null) throw new LibrarySystemException("Available copy is not found");
-
-        return bookCopy;
+        if(book.isAvailable()) {
+            BookCopy bookCopy = book.getNextAvailableCopy();
+            System.out.println("IS AVAILABLE");
+            System.out.println(bookCopy.isAvailable());
+            if(bookCopy == null) throw new LibrarySystemException("Available copy is not found");
+            bookCopy.changeAvailability(false);
+            da.saveBooks(books);
+            return bookCopy;
+        }
+        throw new LibrarySystemException("Available copy is not found");
     }
 
+    /**
+     * @Description Checks out selected books and saves them to storage
+     * @param records Current checkout records
+     * @param memberId Library member ID
+     */
     @Override
     public void checkoutBooks(List<CheckoutRecord> records, String memberId) {
         DataAccess da = new DataAccessFacade();
         HashMap<String, LibraryMember> members = da.readMemberMap();
-        List<LibraryMember> mems = new ArrayList<>();
+
         members.forEach((id, member) -> {
             if(id.equals(memberId)) {
                 records.forEach(record -> {
@@ -179,7 +219,6 @@ public class SystemController implements ControllerInterface {
                     member.addCheckoutRecord(record);
                 });
             }
-            mems.add(member);
         });
 
         da.saveMembers(members);

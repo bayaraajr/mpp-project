@@ -31,7 +31,7 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 
 	private JTable table;
 
-	private static String[] columnNames = {"ISBN", "Title", "Authors", "Number for copies", "Available copies", "Max checkout length"};
+	private static String[] columnNames = {"ISBN", "Title", "Authors", "Number of copies", "Available copies", "Max checkout length"};
 	//Singleton class
 	private AllBookIdsWindow() {}
 	
@@ -82,6 +82,7 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 	}
 
 	public void readBooks() {
+		tableModel.setRowCount(0);
 		HashMap<String, Book> books = ci.allBooks();
 		books.forEach((isbn, book) -> {
 			String authors = "";
@@ -111,8 +112,8 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 		}
 	}
 	
-	public void setData(String data) {
-//		textArea.setText(data);
+	public void setData() {
+		readBooks();
 	}
 	
 //	private void populateTextArea() {

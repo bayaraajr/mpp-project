@@ -33,6 +33,8 @@ public class MemberCheckoutListWindow extends JFrame implements LibWindow{
 
     private JLabel allIDsLabel;
 
+    private int selectedTableRow;
+
     private static String[] columnNames = {"ISBN", "Title", "Copy number", "Checkout date", "Due date", "Status"};
     private MemberCheckoutListWindow() {}
 
@@ -50,25 +52,23 @@ public class MemberCheckoutListWindow extends JFrame implements LibWindow{
         getContentPane().add(mainPanel);
 
         isInitialized = true;
-        readCheckoutList();
     }
 
     public void readCheckoutList() {
         tableModel.setRowCount(0);
+//        LibraryMember mem = LibrarySystem.INSTANCE.ci.getMemberById(member.getMemberId());
+        System.out.println(member.getMemberId());
+        System.out.println(member.getCheckoutRecords().size());
         if(member != null && member.getCheckoutRecords() != null) {
-
-                member.getCheckoutRecords().forEach((record) -> {
+            member.getCheckoutRecords().forEach((record) -> {
                     BookCopy copy = record.getBookCopy();
                     Book book = copy.getBook();
                     LocalDate now = LocalDate.now();
                     int isOverdue = record.getDueDate().compareTo(now);
-
                     Object[] data = new Object[]{ book.getIsbn(), book.getTitle(), copy.getCopyNum(), record.getCheckoutDate().toString(), record.getDueDate().toString(), isOverdue< 0 ? "Overdue" : "Normal"  };
                     tableModel.addRow((Object[]) data);
                 });
         }
-
-
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -76,12 +76,10 @@ public class MemberCheckoutListWindow extends JFrame implements LibWindow{
                     int selectedRow = table.getSelectedRow();
                     if (selectedRow != -1) {
                         // Perform your action here, e.g., get data from the selected row
-                        String dataColumn1 = (String) table.getValueAt(selectedRow, 0);
-                        String dataColumn2 = (String) table.getValueAt(selectedRow, 1);
 
-                        // Example: Print the selected data
-                        System.out.println("Selected Row: " + selectedRow +
-                                ", Data: " + dataColumn1 + ", " + dataColumn2);
+                        selectedTableRow = selectedRow;
+                    } else {
+//                        JOptionPane.showMessageDialog(MemberCheckoutListWindow.INSTANCE,"Select book copy");
                     }
                 }
             }
@@ -113,17 +111,34 @@ public class MemberCheckoutListWindow extends JFrame implements LibWindow{
         FlowLayout fl = new FlowLayout(FlowLayout.LEFT);
         lowerPanel.setLayout(fl);
         JButton backButton = new JButton("Close");
+        JButton returnButton = new JButton("Return book");
         addBackButtonListener(backButton);
+        addReturnButtonListener(returnButton);
         lowerPanel.add(backButton);
+        lowerPanel.add(returnButton);
     }
 
-    public void setData(String data) {
-        textArea.setText(data);
+    public void setData() {
+        readCheckoutList();
     }
     private void addBackButtonListener(JButton butn) {
         butn.addActionListener(evt -> {
 //            MemberCheckoutListWindow.hideAllWindows();
             MemberCheckoutListWindow.INSTANCE.setVisible(false);
+        });
+    }
+
+    private void addReturnButtonListener(JButton butn) {
+        butn.addActionListener(evt -> {
+            if(selectedTableRow < 0) {
+                JOptionPane.showMessageDialog(MemberCheckoutListWindow.INSTANCE,"Please select book copy");
+                return;
+            }
+            String isbn = (String) table.getValueAt(selectedTableRow, 0);
+            int copyNum = (int) table.getValueAt(selectedTableRow, 2);
+            LibrarySystem.INSTANCE.ci.returnBook(isbn, copyNum, member);
+            tableModel.removeRow(selectedTableRow);
+            JOptionPane.showMessageDialog(MemberCheckoutListWindow.INSTANCE,"Successfully returned the book");
         });
     }
 
@@ -138,6 +153,8 @@ public class MemberCheckoutListWindow extends JFrame implements LibWindow{
         isInitialized = val;
 
     }
+
+
 
 
     public LibraryMember getMember() {

@@ -12,6 +12,7 @@ public interface ControllerInterface {
 
 	boolean addBookCopy(String isbn);
 
+	public void returnBook(String isbn, int copyNum, LibraryMember member);
 	public List<String> allMemberIds();
 
 	public HashMap<String, LibraryMember> allMembers();
@@ -25,6 +26,5 @@ public interface ControllerInterface {
 
 	public void checkoutBooks(List<CheckoutRecord> list, String memberId);
 	public void saveMember(String memberId,String firstname,String lastname,String street,String city,String state,String zip,String telephone);
-	public void checkoutBook();
 	
 }

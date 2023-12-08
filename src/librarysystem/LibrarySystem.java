@@ -237,20 +237,10 @@ public class LibrarySystem extends JFrame implements LibWindow {
     public void goToAllBooksDisplayPage(){
         LibrarySystem.hideAllWindows();
         if(!AllBookIdsWindow.INSTANCE.isInitialized())
-
             AllBookIdsWindow.INSTANCE.init();
-        AllBookIdsWindow.INSTANCE.init();
-
-        List<String> ids = ci.allBookIds();
-        Collections.sort(ids);
-        StringBuilder sb = new StringBuilder();
-        for (String s : ids) {
-            sb.append(s + "\n");
-        }
-        System.out.println(sb.toString());
-//            AllBookIdsWindow.INSTANCE.setData(sb.toString());
+        else
+            AllBookIdsWindow.INSTANCE.setData();
         AllBookIdsWindow.INSTANCE.pack();
-        //AllBookIdsWindow.INSTANCE.setSize(660,500);
         Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
         AllBookIdsWindow.INSTANCE.setVisible(true);
     }
@@ -275,16 +265,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
 
             LibrarySystem.hideAllWindows();
-            AllBookIdsWindow.INSTANCE.init();
 
-            List<String> ids = ci.allMemberIds();
-            Collections.sort(ids);
-            StringBuilder sb = new StringBuilder();
-            for (String s : ids) {
-                sb.append(s + "\n");
-            }
-            System.out.println(sb.toString());
-            AllMemberIdsWindow.INSTANCE.setData(sb.toString());
+//            AllMemberIdsWindow.INSTANCE.setData();
             AllMemberIdsWindow.INSTANCE.pack();
             //AllMemberIdsWindow.INSTANCE.setSize(660,500);
             Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
