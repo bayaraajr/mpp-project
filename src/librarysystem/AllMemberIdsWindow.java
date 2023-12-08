@@ -50,11 +50,15 @@ public class AllMemberIdsWindow extends JFrame implements LibWindow {
 		mainPanel.add(lowerPanel, BorderLayout.SOUTH);
 		getContentPane().add(mainPanel);
 		isInitialized = true;
-		readMembers();
+		//readMembers();
 	}
 
 	public void readMembers() {
 		HashMap<String, LibraryMember> members = ci.allMembers();
+		while (tableModel.getRowCount()>0)
+		{
+			tableModel.removeRow(0);
+		}
 		members.forEach((memberId, member) -> {
 			Object[] data = new Object[]{ memberId,  member.getFirstName(), member.getLastName(), member.getTelephone()  };
 			tableModel.addRow((Object[]) data);
@@ -144,7 +148,15 @@ public class AllMemberIdsWindow extends JFrame implements LibWindow {
 				JOptionPane.showMessageDialog(this,"Select member first");
 				return;
 			}
-			System.out.println("EDIT HERE");
+
+			LibrarySystem.hideAllWindows();
+
+			if(!NewMemberWindow.INSTANCE.isInitialized())
+				NewMemberWindow.INSTANCE.init();
+			LibraryMember member = ci.getMemberById(selectedMember);
+			NewMemberWindow.INSTANCE.setFormData(member);
+			Util.centerFrameOnDesktop(NewMemberWindow.INSTANCE);
+			NewMemberWindow.INSTANCE.setVisible(true);
 		});
 	}
 

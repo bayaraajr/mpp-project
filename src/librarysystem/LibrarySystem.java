@@ -22,7 +22,11 @@ import business.SystemController;
 
 import static dataaccess.Auth.*;
 
-
+/**
+ *
+ * MPP-Project bla bla bla bla
+ *
+ */
 public class LibrarySystem extends JFrame implements LibWindow {
 
     ControllerInterface ci = new SystemController();
@@ -233,6 +237,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
     public void goToAllBooksDisplayPage(){
         LibrarySystem.hideAllWindows();
         if(!AllBookIdsWindow.INSTANCE.isInitialized())
+
             AllBookIdsWindow.INSTANCE.init();
         AllBookIdsWindow.INSTANCE.init();
 
@@ -255,9 +260,16 @@ public class LibrarySystem extends JFrame implements LibWindow {
         @Override
         public void actionPerformed(ActionEvent e) {
             LibrarySystem.hideAllWindows();
+            /*
+            This condition is made because the number of callbacks of the screen model has been doubled.
+             */
             if(!AllMemberIdsWindow.INSTANCE.isInitialized())
                 AllMemberIdsWindow.INSTANCE.init();
-
+            /*
+            Do not include AllMemberIdsWindow.INSTANCE.readMembers() in AllMemberIdsWindow.INSTANCE.Init().
+            Because if you insert it, you can't update the newly inserted data by taking the data that was called the first time.
+             */
+            AllMemberIdsWindow.INSTANCE.readMembers();
             AllMemberIdsWindow.INSTANCE.pack();
             AllMemberIdsWindow.INSTANCE.setVisible(true);
 

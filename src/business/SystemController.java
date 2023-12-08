@@ -12,6 +12,13 @@ import dataaccess.User;
 public class SystemController implements ControllerInterface {
     public static Auth currentAuth = null;
 
+    /**
+     * Login section and check id and password. If false, a LoginException is thrown.
+     *
+     * @param id
+     * @param password
+     * @throws LoginException
+     */
     public void login(String id, String password) throws LoginException {
         DataAccess da = new DataAccessFacade();
         HashMap<String, User> map = da.readUserMap();
@@ -24,7 +31,19 @@ public class SystemController implements ControllerInterface {
         }
         currentAuth = map.get(id).getAuthorization();
     }
-    
+
+    /**
+     *  This is insert member function. The information below is required.
+     *
+     * @param memberId
+     * @param firstname
+     * @param lastname
+     * @param street
+     * @param city
+     * @param state
+     * @param zip
+     * @param telephone
+     */
 	@Override
 	public void saveMember(
 			String memberId,
@@ -35,9 +54,7 @@ public class SystemController implements ControllerInterface {
 			String state,
 			String zip,
 			String telephone
-	)
-    {
-		//add a member
+	) {
 		DataAccess da = new DataAccessFacade();
 		// save to data
 		da.saveNewMember(new LibraryMember(memberId,firstname,lastname,telephone, new Address(street,city,state,zip)));
@@ -66,7 +83,6 @@ public class SystemController implements ControllerInterface {
 
     }
 
-
     @Override
     public boolean addBookCopy(String isbn){
         DataAccess da = new DataAccessFacade();
@@ -81,6 +97,7 @@ public class SystemController implements ControllerInterface {
         return false;
     }
 
+
     @Override
     public List<String> allMemberIds() {
         DataAccess da = new DataAccessFacade();
@@ -89,12 +106,23 @@ public class SystemController implements ControllerInterface {
         return retval;
     }
 
+    /**
+     * This is return all members list.
+     * @return
+     */
     @Override
     public HashMap<String, LibraryMember> allMembers() {
         DataAccess da = new DataAccessFacade();
         return da.readMemberMap();
     }
 
+    /**
+     *
+     * This will fetch the information on memberId.
+     *
+     * @param memberId
+     * @return
+     */
     @Override
     public HashMap<String, Book> allBooks() {
         DataAccess da = new DataAccessFacade();
