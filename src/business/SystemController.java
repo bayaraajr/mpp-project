@@ -61,16 +61,43 @@ public class SystemController implements ControllerInterface {
 
 	}
 
-	@Override
-	public void checkoutBook() {
+    @Override
+    public void checkoutBook() {
 
     }
 
-    /**
-     * This is return all member's ids.
-     *
-     * @return
-     */
+    @Override
+    public void saveBook(String isbn, String title, int maximum_checkout_length,
+                         List<Author> authors, int number_of_copies)
+    {
+        Book b = new Book(isbn,title,maximum_checkout_length,authors);
+        if(number_of_copies>1){
+            for (int i = 1; i < number_of_copies; i++) {
+                b.addCopy();
+            }
+        }
+        //add a member
+        DataAccessFacade da = new DataAccessFacade();
+        // save to data
+        da.saveBook(b);
+
+    }
+
+    @Override
+    public boolean addBookCopy(String isbn){
+        DataAccess da = new DataAccessFacade();
+        HashMap<String, Book> books = da.readBooksMap();
+
+        if(books.containsKey(isbn)){
+            Book book = books.get(isbn);
+            book.addCopy();
+            da.saveBook(book);
+            return true;
+        }
+        return false;
+    }
+
+
     @Override
     public List<String> allMemberIds() {
         DataAccess da = new DataAccessFacade();

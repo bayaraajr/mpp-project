@@ -34,7 +34,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
     JPanel mainPanel;
     JMenuBar menuBar;
     JMenu options;
-    JMenuItem login, allBookIds, allMemberIds, checkoutBook, newMember;
+    JMenuItem login, allBookIds, allMemberIds, checkoutBook, newMember, addBookCopy, addBook;
     String pathToImage;
     private boolean isInitialized = false;
 
@@ -44,7 +44,10 @@ public class LibrarySystem extends JFrame implements LibWindow {
             NewMemberWindow.INSTANCE,
             CheckoutBookWindow.INSTANCE,
             AllMemberIdsWindow.INSTANCE,
-            AllBookIdsWindow.INSTANCE
+            AllBookIdsWindow.INSTANCE,
+            AddBookCopyWindow.INSTANCE,
+            AddBookWindow.INSTANCE,
+            AddAuthorWindow.INSTANCE
     };
 
     public static void hideAllWindows() {
@@ -93,31 +96,48 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
     void addMenuItems() {
 
-        if (options != null) menuBar.remove(options);
+        if (options != null)
+            menuBar.remove(options);
 
         options = new JMenu("Options");
         menuBar.add(options);
+
         login = new JMenuItem(SystemController.currentAuth != null ? "Logout" : "Login");
         login.addActionListener(new LoginListener());
+
+        addBook = new JMenuItem("Add new Book");
+        addBook.addActionListener(new addBookListener());
+
         checkoutBook = new JMenuItem("Checkout");
         checkoutBook.addActionListener(new CheckoutListener());
+
+        addBookCopy = new JMenuItem("Add Book Copy");
+        addBookCopy.addActionListener(new addBookCopyListener());
+
         newMember = new JMenuItem("New Member");
         newMember.addActionListener(new NewMemberListener());
+
         allBookIds = new JMenuItem("Book list");
         allBookIds.addActionListener(new AllBookIdsListener());
+
         allMemberIds = new JMenuItem("Member list");
         allMemberIds.addActionListener(new AllMemberIdsListener());
+
         options.add(login);
 
         if (SystemController.currentAuth != null) {
             if(SystemController.currentAuth == BOTH){
                 options.add(checkoutBook);
                 options.add(newMember);
+                options.add(addBookCopy);
+                options.add(addBook);
+
             }else if (SystemController.currentAuth == LIBRARIAN) {
                 options.add(checkoutBook);
             } else if (SystemController.currentAuth == ADMIN) {
                 options.add(newMember);
-                //Edit members
+                options.add(addBookCopy);
+                options.add(addBook);
             }
             options.add(allBookIds);
             options.add(allMemberIds);
@@ -147,6 +167,36 @@ public class LibrarySystem extends JFrame implements LibWindow {
         }
 
     }
+
+    class addBookCopyListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LibrarySystem.hideAllWindows();
+            if(!AddBookCopyWindow.INSTANCE.isInitialized())
+                AddBookCopyWindow.INSTANCE.init();
+            Util.centerFrameOnDesktop(AddBookCopyWindow.INSTANCE);
+            AddBookCopyWindow.INSTANCE.setVisible(true);
+            AddBookCopyWindow.INSTANCE.pack();
+        }
+
+    }
+
+    class addBookListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LibrarySystem.hideAllWindows();
+            if(!AddBookWindow.INSTANCE.isInitialized())
+                AddBookWindow.INSTANCE.init();
+            Util.centerFrameOnDesktop(AddBookWindow.INSTANCE);
+            AddBookWindow.INSTANCE.setVisible(true);
+            AddBookWindow.INSTANCE.pack();
+        }
+
+    }
+
+
 
     class CheckoutListener implements ActionListener {
 
@@ -180,26 +230,29 @@ public class LibrarySystem extends JFrame implements LibWindow {
     class AllBookIdsListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            LibrarySystem.hideAllWindows();
-            if(!AllBookIdsWindow.INSTANCE.isInitialized())
-                AllBookIdsWindow.INSTANCE.init();
-            AllBookIdsWindow.INSTANCE.init();
-
-            List<String> ids = ci.allBookIds();
-            Collections.sort(ids);
-            StringBuilder sb = new StringBuilder();
-            for (String s : ids) {
-                sb.append(s + "\n");
-            }
-            System.out.println(sb.toString());
-//            AllBookIdsWindow.INSTANCE.setData(sb.toString());
-            AllBookIdsWindow.INSTANCE.pack();
-            //AllBookIdsWindow.INSTANCE.setSize(660,500);
-            Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
-            AllBookIdsWindow.INSTANCE.setVisible(true);
-
+            goToAllBooksDisplayPage();
         }
+    }
+
+    public void goToAllBooksDisplayPage(){
+        LibrarySystem.hideAllWindows();
+        if(!AllBookIdsWindow.INSTANCE.isInitialized())
+
+            AllBookIdsWindow.INSTANCE.init();
+        AllBookIdsWindow.INSTANCE.init();
+
+        List<String> ids = ci.allBookIds();
+        Collections.sort(ids);
+        StringBuilder sb = new StringBuilder();
+        for (String s : ids) {
+            sb.append(s + "\n");
+        }
+        System.out.println(sb.toString());
+//            AllBookIdsWindow.INSTANCE.setData(sb.toString());
+        AllBookIdsWindow.INSTANCE.pack();
+        //AllBookIdsWindow.INSTANCE.setSize(660,500);
+        Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
+        AllBookIdsWindow.INSTANCE.setVisible(true);
     }
 
     class AllMemberIdsListener implements ActionListener {

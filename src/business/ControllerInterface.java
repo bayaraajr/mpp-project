@@ -3,12 +3,15 @@ package business;
 import java.util.HashMap;
 import java.util.List;
 
-import business.Book;
-import dataaccess.DataAccess;
-import dataaccess.DataAccessFacade;
-
 public interface ControllerInterface {
 	public void login(String id, String password) throws LoginException;
+
+
+	void saveBook(String isbn, String title, int maximum_checkout_length,
+				  List<Author> authors, int number_of_copies);
+
+	boolean addBookCopy(String isbn);
+
 	public List<String> allMemberIds();
 
 	public HashMap<String, LibraryMember> allMembers();

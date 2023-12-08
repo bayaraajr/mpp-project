@@ -38,7 +38,12 @@ final public class BookCopy implements Serializable {
 	public void changeAvailability(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Book ISBN "+ book.getIsbn() + "Copy Number "+ copyNum;
+	}
+
 	@Override
 	public boolean equals(Object ob) {
 		if(ob == null) return false;
@@ -46,5 +51,4 @@ final public class BookCopy implements Serializable {
 		BookCopy copy = (BookCopy)ob;
 		return copy.book.getIsbn().equals(book.getIsbn()) && copy.copyNum == copyNum;
 	}
-	
 }
