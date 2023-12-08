@@ -70,6 +70,7 @@ public class NewMemberWindow extends JFrame implements LibWindow {
 
 
         memberIdField = new JTextField(10);
+        memberIdField.setEditable(false);
         firstNameField = new JTextField(10);
         lastNameField = new JTextField(10);
         streetField = new JTextField(10);
