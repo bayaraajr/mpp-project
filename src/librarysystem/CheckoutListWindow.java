@@ -31,11 +31,11 @@ public class CheckoutListWindow extends JFrame implements LibWindow{
 
     private JTable table;
 
-    private JLabel allIDsLabel;
+    private JLabel allIDsLabel, memberLabel;
 
     private int selectedTableRow;
 
-    private JTextField isbnField;
+    private JTextField isbnField, memberField;
 
     private JButton searchButton;
 
@@ -66,17 +66,24 @@ public class CheckoutListWindow extends JFrame implements LibWindow{
             if(member.getCheckoutRecords() != null) {
                 member.getCheckoutRecords().forEach((record) -> {
                     String isbn = isbnField.getText().trim();
+                    String memberValue = memberField.getText().trim();
                     BookCopy copy = record.getBookCopy();
                     Book book = copy.getBook();
                     LocalDate now = LocalDate.now();
                     int isOverdue = record.getDueDate().compareTo(now);
                     Object[] data = new Object[]{ book.getIsbn(), member.getMemberId(),member.getFirstName() + " " + member.getLastName() , book.getTitle(), copy.getCopyNum(), record.getCheckoutDate().toString(), record.getDueDate().toString(), isOverdue< 0 ? "Overdue" : "Normal"  };
-                   if(isbnField.getText().trim().length() > 0) {
-
-
-                       if(isbn.length() > 0 && book.getIsbn().equals(isbn))
+                   if(isbn.length() > 0 && memberId.length() > 0) {
+                       if(book.getIsbn().equals(isbn) && member.getMemberId().equals(memberValue))
                         tableModel.addRow((Object[]) data);
-                   } else {
+                   }
+                   else if(isbn.length() > 0 && book.getIsbn().equals(isbn)) {
+
+                            tableModel.addRow((Object[]) data);
+                   }
+                   else if(memberValue.length() > 0 && member.getMemberId().equals(memberValue  )) {
+                       tableModel.addRow((Object[]) data);
+                   }
+                   else if(isbn.length() == 0 && memberValue.length() == 0){
                        tableModel.addRow((Object[]) data);
                    }
                 });
@@ -104,12 +111,17 @@ public class CheckoutListWindow extends JFrame implements LibWindow{
     public void defineTopPanel() {
         topPanel = new JPanel();
         isbnField = new JTextField(10);
+        memberField = new JTextField(10);
         allIDsLabel = new JLabel("Enter ISBN");
+        memberLabel = new JLabel("Enter member ID");
+
         searchButton = new JButton("Search");
 //        Util.adjustLabelFont(allIDsLabel, Util.DARK_BLUE, true);
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(allIDsLabel);
         topPanel.add(isbnField);
+        topPanel.add(memberLabel);
+        topPanel.add(memberField);
         topPanel.add(searchButton);
         addReturnButtonListener(searchButton);
 
