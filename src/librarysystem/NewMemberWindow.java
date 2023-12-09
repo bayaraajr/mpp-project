@@ -173,7 +173,7 @@ public class NewMemberWindow extends JFrame implements LibWindow {
                 rules.applyRules(NewMemberWindow.this);
 
                 Address address = new Address(streetField.getText(), cityField.getText(), stateField.getText(), zipField.getText());
-                LibraryMember member = new LibraryMember("", firstNameField.getText(), lastNameField.getText(), telephoneField.getText(), address);
+                LibraryMember member = new LibraryMember(memberIdField.getText(), firstNameField.getText(), lastNameField.getText(), telephoneField.getText(), address);
                 LibrarySystem.INSTANCE.ci.saveMember(member);
 
                 cleanFields();
