@@ -34,7 +34,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
     JPanel mainPanel;
     JMenuBar menuBar;
     JMenu options;
-    JMenuItem login, allBookIds, allMemberIds, checkoutBook, newMember, addBookCopy, addBook;
+    JMenuItem login, allBookIds, allMemberIds, checkoutBook, newMember, addBookCopy, addBook,checkoutList;
     String pathToImage;
     private boolean isInitialized = false;
 
@@ -123,6 +123,10 @@ public class LibrarySystem extends JFrame implements LibWindow {
         allMemberIds = new JMenuItem("Member list");
         allMemberIds.addActionListener(new AllMemberIdsListener());
 
+
+        checkoutList = new JMenuItem("Checkout list");
+        checkoutList.addActionListener(new CheckoutListListener());
+
         options.add(login);
 
         if (SystemController.currentAuth != null) {
@@ -131,9 +135,11 @@ public class LibrarySystem extends JFrame implements LibWindow {
                 options.add(newMember);
                 options.add(addBookCopy);
                 options.add(addBook);
+                options.add(checkoutList);
 
             }else if (SystemController.currentAuth == LIBRARIAN) {
                 options.add(checkoutBook);
+                options.add(checkoutList);
             } else if (SystemController.currentAuth == ADMIN) {
                 options.add(newMember);
                 options.add(addBookCopy);
@@ -271,6 +277,38 @@ public class LibrarySystem extends JFrame implements LibWindow {
             //AllMemberIdsWindow.INSTANCE.setSize(660,500);
             Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
             AllMemberIdsWindow.INSTANCE.setVisible(true);
+
+
+        }
+
+    }
+
+    class CheckoutListListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LibrarySystem.hideAllWindows();
+            /*
+            This condition is made because the number of callbacks of the screen model has been doubled.
+             */
+            if(!CheckoutListWindow.INSTANCE.isInitialized())
+                CheckoutListWindow.INSTANCE.init();
+            /*
+            Do not include AllMemberIdsWindow.INSTANCE.readMembers() in AllMemberIdsWindow.INSTANCE.Init().
+            Because if you insert it, you can't update the newly inserted data by taking the data that was called the first time.
+             */
+            CheckoutListWindow.INSTANCE.readCheckoutList();
+            CheckoutListWindow.INSTANCE.pack();
+            CheckoutListWindow.INSTANCE.setVisible(true);
+
+
+            LibrarySystem.hideAllWindows();
+
+//            AllMemberIdsWindow.INSTANCE.setData();
+            CheckoutListWindow.INSTANCE.pack();
+            //AllMemberIdsWindow.INSTANCE.setSize(660,500);
+            Util.centerFrameOnDesktop(CheckoutListWindow.INSTANCE);
+            CheckoutListWindow.INSTANCE.setVisible(true);
 
 
         }

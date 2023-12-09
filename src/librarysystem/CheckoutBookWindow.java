@@ -124,7 +124,7 @@ public class CheckoutBookWindow extends JFrame implements LibWindow {
     }
 
     public void defineMiddlePanel() {
-        middlePanel=new JPanel();
+        middlePanel = new JPanel();
         middlePanel.setLayout(new BorderLayout());
         searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         resultPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
