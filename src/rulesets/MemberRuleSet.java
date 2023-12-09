@@ -57,7 +57,7 @@ public class MemberRuleSet implements RuleSet {
         Pattern pattern = Pattern.compile(NAME_PATTERN);
         Matcher matcher = pattern.matcher(this.newMemberWindow.getFirstNameField().trim());
         if(!matcher.matches() || this.newMemberWindow.getFirstNameField().trim().length() < 2 || this.newMemberWindow.getFirstNameField().trim().length() > 35) {
-            throw new RuleException("First name must be 2 to 35 characters long, and a single character without numbers");
+            throw new RuleException("First name must be 2 to 35 characters long, and a single character without numbers and special characters");
         }
     }
 
@@ -65,22 +65,22 @@ public class MemberRuleSet implements RuleSet {
         Pattern pattern = Pattern.compile(NAME_PATTERN);
         Matcher matcher = pattern.matcher(this.newMemberWindow.getLastNameField().trim());
         if(!matcher.matches() || this.newMemberWindow.getLastNameField().trim().length() < 2 || this.newMemberWindow.getLastNameField().trim().length() > 35) {
-            throw new RuleException("Last name must be 2 to 35 characters long, and a single character without numbers");
+            throw new RuleException("Last name must be 2 to 35 characters long, and a single character without numbers and special characters");
         }
     }
 
     private void valStreetName() throws RuleException {
-        Pattern pattern = Pattern.compile(STREET_PATTERN);
-        Matcher matcher = pattern.matcher(this.newMemberWindow.gertStreetField().trim());
-        if(!matcher.matches() || this.newMemberWindow.gertStreetField().trim().length() < 2 || this.newMemberWindow.gertStreetField().trim().length() > 75) {
+//        Pattern pattern = Pattern.compile(STREET_PATTERN);
+//        Matcher matcher = pattern.matcher(this.newMemberWindow.gertStreetField().trim());
+        if(this.newMemberWindow.gertStreetField().trim().length() < 2 || this.newMemberWindow.gertStreetField().trim().length() > 75) {
             throw new RuleException("Street must be 2 to 75 characters long, and a single character with numbers.");
         }
     }
 
     private void valCityName() throws RuleException {
-        Pattern pattern = Pattern.compile(STREET_PATTERN);
-        Matcher matcher = pattern.matcher(this.newMemberWindow.gertCityField().trim());
-        if(!matcher.matches() || this.newMemberWindow.gertCityField().trim().length() < 2 || this.newMemberWindow.gertCityField().trim().length() > 75) {
+//        Pattern pattern = Pattern.compile(STREET_PATTERN);
+//        Matcher matcher = pattern.matcher(this.newMemberWindow.gertCityField().trim());
+        if(this.newMemberWindow.gertCityField().trim().length() < 2 || this.newMemberWindow.gertCityField().trim().length() > 75) {
             throw new RuleException("City must be 2 to 75 characters long, and a single character with numbers.");
         }
     }
@@ -88,7 +88,7 @@ public class MemberRuleSet implements RuleSet {
     private void valStateName() throws RuleException {
         Pattern pattern = Pattern.compile(STREET_PATTERN);
         Matcher matcher = pattern.matcher(this.newMemberWindow.getStateField().trim());
-        if(!matcher.matches() || this.newMemberWindow.getStateField().trim().length() < 2 || this.newMemberWindow.getStateField().trim().length() > 75) {
+        if(!matcher.matches() || this.newMemberWindow.getStateField().trim().length() <= 2 || this.newMemberWindow.getStateField().trim().length() > 75) {
             throw new RuleException("State must be 2 to 75 characters long, and a single character with numbers.");
         }
     }
