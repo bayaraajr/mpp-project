@@ -88,16 +88,16 @@ public class MemberRuleSet implements RuleSet {
     private void valStateName() throws RuleException {
         Pattern pattern = Pattern.compile(STREET_PATTERN);
         Matcher matcher = pattern.matcher(this.newMemberWindow.getStateField().trim());
-        if(!matcher.matches() || this.newMemberWindow.getStateField().trim().length() <= 2 || this.newMemberWindow.getStateField().trim().length() > 75) {
+        if(!matcher.matches() || this.newMemberWindow.getStateField().trim().length() < 2 || this.newMemberWindow.getStateField().trim().length() > 75) {
             throw new RuleException("State must be 2 to 75 characters long, and a single character with numbers.");
         }
     }
 
     private void isPhone() throws RuleException {
-        Pattern pattern = Pattern.compile(PHONE_NUMBER_PATTERN);
-        Matcher matcher = pattern.matcher(this.newMemberWindow.getTelephoneField().trim());
-        if(!matcher.matches() || this.newMemberWindow.getTelephoneField().trim().length() != 14) {
-            throw new RuleException("Invalid phone number example (123) 456-7890");
+//        Pattern pattern = Pattern.compile(PHONE_NUMBER_PATTERN);
+//        Matcher matcher = pattern.matcher(this.newMemberWindow.getTelephoneField().trim());
+        if(this.newMemberWindow.getTelephoneField().trim().length() == 0) {
+            throw new RuleException("Invalid phone number");
         }
     }
 
