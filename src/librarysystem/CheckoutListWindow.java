@@ -39,6 +39,8 @@ public class CheckoutListWindow extends JFrame implements LibWindow{
 
     private JButton searchButton;
 
+    private JCheckBox overdueCheck;
+
     private static String[] columnNames = {"ISBN", "Member ID", "Member name","Title", "Copy number", "Checkout date", "Due date", "Status"};
     private CheckoutListWindow() {}
 
@@ -67,24 +69,32 @@ public class CheckoutListWindow extends JFrame implements LibWindow{
                 member.getCheckoutRecords().forEach((record) -> {
                     String isbn = isbnField.getText().trim();
                     String memberValue = memberField.getText().trim();
+                    boolean overdueChecked = overdueCheck.isSelected();
                     BookCopy copy = record.getBookCopy();
                     Book book = copy.getBook();
                     LocalDate now = LocalDate.now();
-                    int isOverdue = record.getDueDate().compareTo(now);
-                    Object[] data = new Object[]{ book.getIsbn(), member.getMemberId(),member.getFirstName() + " " + member.getLastName() , book.getTitle(), copy.getCopyNum(), record.getCheckoutDate().toString(), record.getDueDate().toString(), isOverdue< 0 ? "Overdue" : "Normal"  };
+                    boolean isOverdue = record.getDueDate().compareTo(now) < 0;
+                    Object[] data = new Object[]{ book.getIsbn(), member.getMemberId(),member.getFirstName() + " " + member.getLastName() , book.getTitle(), copy.getCopyNum(), record.getCheckoutDate().toString(), record.getDueDate().toString(), isOverdue ? "Overdue" : "Normal"  };
                    if(isbn.length() > 0 && memberId.length() > 0) {
                        if(book.getIsbn().equals(isbn) && member.getMemberId().equals(memberValue))
-                        tableModel.addRow((Object[]) data);
+                         if(overdueChecked) {
+                             if(isOverdue) tableModel.addRow((Object[]) data);
+                         } else tableModel.addRow((Object[]) data);
                    }
                    else if(isbn.length() > 0 && book.getIsbn().equals(isbn)) {
-
-                            tableModel.addRow((Object[]) data);
+                       if(overdueChecked) {
+                           if(isOverdue) tableModel.addRow((Object[]) data);
+                       } else tableModel.addRow((Object[]) data);
                    }
                    else if(memberValue.length() > 0 && member.getMemberId().equals(memberValue  )) {
-                       tableModel.addRow((Object[]) data);
+                       if(overdueChecked) {
+                           if(isOverdue) tableModel.addRow((Object[]) data);
+                       } else tableModel.addRow((Object[]) data);
                    }
                    else if(isbn.length() == 0 && memberValue.length() == 0){
-                       tableModel.addRow((Object[]) data);
+                       if(overdueChecked) {
+                           if(isOverdue) tableModel.addRow((Object[]) data);
+                       } else tableModel.addRow((Object[]) data);
                    }
                 });
             }
@@ -115,6 +125,7 @@ public class CheckoutListWindow extends JFrame implements LibWindow{
         allIDsLabel = new JLabel("Enter ISBN");
         memberLabel = new JLabel("Enter member ID");
 
+        overdueCheck = new JCheckBox("Overdue");
         searchButton = new JButton("Search");
 //        Util.adjustLabelFont(allIDsLabel, Util.DARK_BLUE, true);
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -122,6 +133,7 @@ public class CheckoutListWindow extends JFrame implements LibWindow{
         topPanel.add(isbnField);
         topPanel.add(memberLabel);
         topPanel.add(memberField);
+        topPanel.add(overdueCheck);
         topPanel.add(searchButton);
         addReturnButtonListener(searchButton);
 
